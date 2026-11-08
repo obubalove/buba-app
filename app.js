@@ -1901,7 +1901,7 @@ const App = {
                     const btn = card.querySelector(".plan-select-btn");
                     if (btn) {
                         const plan = btn.getAttribute("data-plan");
-                        if (plan === currentPlan) {
+                        if (plan === "free" && plan === currentPlan) {
                             btn.disabled = true;
                             btn.textContent = "✓ Current Active Plan";
                             btn.style.opacity = "0.75";
@@ -1911,9 +1911,9 @@ const App = {
                             btn.style.opacity = "1";
                             btn.style.cursor = "pointer";
                             if (plan === "free") btn.textContent = "Switch to Free";
-                            else if (plan === "silver") btn.textContent = "Select Silver ($0.99/wk)";
-                            else if (plan === "bronze") btn.textContent = "Select Bronze ($5.99/mo)";
-                            else if (plan === "gold") btn.textContent = "Select Gold 👑 ($11.99/mo)";
+                            else if (plan === "silver") btn.textContent = plan === currentPlan ? "✓ Active • Manage / Renew Silver ($0.99/wk)" : "Select Silver ($0.99/wk)";
+                            else if (plan === "bronze") btn.textContent = plan === currentPlan ? "✓ Active • Manage / Renew Bronze ($5.99/mo)" : "Select Bronze ($5.99/mo)";
+                            else if (plan === "gold") btn.textContent = plan === currentPlan ? "✓ Active • Manage / Renew Gold 👑 ($11.99/mo)" : "Select Gold 👑 ($11.99/mo)";
                         }
                     }
                 });
@@ -1947,6 +1947,11 @@ const App = {
         if (DOM.openPlansBtn) DOM.openPlansBtn.addEventListener("click", openPlansFunc);
         if (DOM.closePlansBtn) DOM.closePlansBtn.addEventListener("click", closePlansFunc);
         if (DOM.settingsPlansBtn) DOM.settingsPlansBtn.addEventListener("click", openPlansFunc);
+        const headerPlansBtn = document.getElementById("header-plans-btn");
+        if (headerPlansBtn) headerPlansBtn.addEventListener("click", openPlansFunc);
+        if (DOM.settingsPaymentPill) DOM.settingsPaymentPill.addEventListener("click", openPlansFunc);
+        const savedPaymentCardBox = document.getElementById("saved-payment-card-box");
+        if (savedPaymentCardBox) savedPaymentCardBox.addEventListener("click", openPlansFunc);
 
         if (DOM.planSelectBtns) {
             DOM.planSelectBtns.forEach(btn => {
