@@ -363,9 +363,9 @@ const state = {
         gold: "prod_VWv9MAFgHrRaHd"
     },
     stripePlanLinks: {
-        silver: "price_1UVrHWLls49bwhzxpjCjICpl",
-        bronze: "price_1UVrIQLls49bwhzxnrE5DEp7",
-        gold: "price_1UVrJXLls49bwhzxRzsNliQJ"
+        silver: "https://buy.stripe.com/4gMcN66Yd3kN8S794k7ok03",
+        bronze: "https://buy.stripe.com/3cIfZigyNbRj0lB94k7ok04",
+        gold: "https://buy.stripe.com/5kQaEY3M15sV1pFeoE7ok05"
     },
     passCountToday: 0,
     lastPassResetDate: null,
@@ -620,10 +620,11 @@ const Storage = {
                     state.stripeProducts = Object.assign({}, state.stripeProducts, parsed.stripeProducts);
                 }
                 if (parsed.stripePlanLinks) {
+                    const useLinkOrDefault = (val, def) => (val && val.startsWith("https://buy.stripe.com/")) ? val : def;
                     state.stripePlanLinks = {
-                        silver: parsed.stripePlanLinks.silver || "price_1UVrHWLls49bwhzxpjCjICpl",
-                        bronze: parsed.stripePlanLinks.bronze || "price_1UVrIQLls49bwhzxnrE5DEp7",
-                        gold: parsed.stripePlanLinks.gold || "price_1UVrJXLls49bwhzxRzsNliQJ"
+                        silver: useLinkOrDefault(parsed.stripePlanLinks.silver, "https://buy.stripe.com/4gMcN66Yd3kN8S794k7ok03"),
+                        bronze: useLinkOrDefault(parsed.stripePlanLinks.bronze, "https://buy.stripe.com/3cIfZigyNbRj0lB94k7ok04"),
+                        gold: useLinkOrDefault(parsed.stripePlanLinks.gold, "https://buy.stripe.com/5kQaEY3M15sV1pFeoE7ok05")
                     };
                 }
                 state.passCountToday = parsed.passCountToday || 0;
@@ -1778,6 +1779,24 @@ const App = {
                 else if (state.selectedPaymentMethod === "googlepay") methodLabel = "Google Pay";
                 else if (state.selectedPaymentMethod === "bank") methodLabel = "Bank Transfer";
 
+                // If paying for a BUBA subscription plan and a Stripe Payment Link is configured, redirect directly to Stripe Checkout
+                if (state.activePaymentType === "plan" && state.selectedPlanToPay) {
+                    const planName = state.selectedPlanToPay;
+                    const label = state.selectedPlanLabelToPay || "BUBA Plan";
+                    const configuredLinkOrPrice = (state.stripePlanLinks && state.stripePlanLinks[planName]) ? state.stripePlanLinks[planName].trim() : "";
+
+                    if (configuredLinkOrPrice.startsWith("https://buy.stripe.com/") || configuredLinkOrPrice.startsWith("https://checkout.stripe.com/")) {
+                        const checkoutUrl = new URL(configuredLinkOrPrice);
+                        if (state.userProfile && state.userProfile.email) {
+                            checkoutUrl.searchParams.set("prefilled_email", state.userProfile.email);
+                        }
+                        checkoutUrl.searchParams.set("client_reference_id", `${state.stripeAccountId}_${planName}`);
+                        this.showToast(`Redirecting to Stripe Checkout for ${label}... 💳`, "default");
+                        window.location.href = checkoutUrl.toString();
+                        return;
+                    }
+                }
+
                 if (state.selectedPaymentMethod === "card") {
                     const termsChecked = DOM.cardTermsCheck ? DOM.cardTermsCheck.checked : false;
                     if (!termsChecked) {
@@ -1806,18 +1825,6 @@ const App = {
                     const planName = state.selectedPlanToPay;
                     const label = state.selectedPlanLabelToPay || "BUBA Plan";
                     const configuredLinkOrPrice = (state.stripePlanLinks && state.stripePlanLinks[planName]) ? state.stripePlanLinks[planName].trim() : "";
-
-                    // 1. Direct Stripe Payment Link redirect (https://buy.stripe.com/...)
-                    if (configuredLinkOrPrice.startsWith("https://buy.stripe.com/") || configuredLinkOrPrice.startsWith("https://checkout.stripe.com/")) {
-                        const checkoutUrl = new URL(configuredLinkOrPrice);
-                        if (state.userProfile && state.userProfile.email) {
-                            checkoutUrl.searchParams.set("prefilled_email", state.userProfile.email);
-                        }
-                        checkoutUrl.searchParams.set("client_reference_id", `${state.stripeAccountId}_${planName}`);
-                        this.showToast(`Redirecting to Stripe Checkout for ${label}... 💳`, "default");
-                        window.location.href = checkoutUrl.toString();
-                        return;
-                    }
 
                     // 2. Client-only Stripe Checkout via Publishable Key + Price ID (price_...)
                     if (configuredLinkOrPrice.startsWith("price_")) {
@@ -1967,6 +1974,17 @@ const App = {
                         this.syncSettingsFormWithState();
                         this.showToast("Plan set to BUBA Free ✨", "default");
                     } else {
+                        const configuredLink = (state.stripePlanLinks && state.stripePlanLinks[planName]) ? state.stripePlanLinks[planName].trim() : "";
+                        if (configuredLink.startsWith("https://buy.stripe.com/") || configuredLink.startsWith("https://checkout.stripe.com/")) {
+                            const checkoutUrl = new URL(configuredLink);
+                            if (state.userProfile && state.userProfile.email) {
+                                checkoutUrl.searchParams.set("prefilled_email", state.userProfile.email);
+                            }
+                            checkoutUrl.searchParams.set("client_reference_id", `${state.stripeAccountId}_${planName}`);
+                            this.showToast(`Redirecting to Stripe Checkout for ${label}... 💳`, "default");
+                            window.location.href = checkoutUrl.toString();
+                            return;
+                        }
                         closePlansFunc();
                         setTimeout(() => {
                             this.openPaymentForPlan(planName, label, priceText);
