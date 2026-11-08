@@ -708,6 +708,10 @@ const App = {
         
         // Show Log In to O-Buba page
         this.showLoginPage();
+
+        if (urlParams.get("open_plans") === "1") {
+            this.openPlansModal();
+        }
     },
 
     setupEventListeners() {
@@ -1949,6 +1953,12 @@ const App = {
         if (DOM.settingsPlansBtn) DOM.settingsPlansBtn.addEventListener("click", openPlansFunc);
         const headerPlansBtn = document.getElementById("header-plans-btn");
         if (headerPlansBtn) headerPlansBtn.addEventListener("click", openPlansFunc);
+        const loginPlansBtn = document.getElementById("login-plans-btn");
+        if (loginPlansBtn) loginPlansBtn.addEventListener("click", openPlansFunc);
+        const deckPlansBtn = document.getElementById("deck-plans-btn");
+        if (deckPlansBtn) deckPlansBtn.addEventListener("click", openPlansFunc);
+        const bottomNavPlansBtn = document.getElementById("bottom-nav-plans-btn");
+        if (bottomNavPlansBtn) bottomNavPlansBtn.addEventListener("click", openPlansFunc);
         if (DOM.settingsPaymentPill) DOM.settingsPaymentPill.addEventListener("click", openPlansFunc);
         const savedPaymentCardBox = document.getElementById("saved-payment-card-box");
         if (savedPaymentCardBox) savedPaymentCardBox.addEventListener("click", openPlansFunc);

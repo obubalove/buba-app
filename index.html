@@ -89,6 +89,10 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary btn-block" id="login-submit-btn" style="margin-top: 4px; width: 100%;">Log In</button>
+                            <button type="button" id="login-plans-btn" class="btn btn-block" style="margin-top: 8px; width: 100%; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; font-weight: 900; font-size: 13.5px; border: none; border-radius: 14px; padding: 11px 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                <span>👑</span>
+                                <span>Subscriptions &amp; Plans (Silver • Bronze • Gold)</span>
+                            </button>
                         </form>
 
                         <div style="margin-top: 18px; font-size: 13px; opacity: 0.85; text-align: center;">
@@ -524,7 +528,7 @@
             <!-- Card Stack View / Swipe Area -->
             <section class="deck-view active" id="deck-panel">
                 <!-- Country Selection Header Widget (Top Left Corner) -->
-                <div class="deck-country-widget" id="deck-country-widget">
+                <div class="deck-country-widget" id="deck-country-widget" style="display: flex; align-items: center; gap: 8px;">
                     <div class="deck-country-header">
                         <span class="country-label-icon">🌐</span>
                         <select id="deck-country-select" class="deck-country-dropdown" title="Select Country for Matching">
@@ -569,6 +573,10 @@
                             <option value="UAE">🇦🇪 UAE</option>
                         </select>
                     </div>
+                    <button type="button" id="deck-plans-btn" title="Buba Subscriptions & Plans" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; border: none; border-radius: 16px; padding: 6px 12px; font-size: 12px; font-weight: 900; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(255, 215, 0, 0.35);">
+                        <span>👑</span>
+                        <span>Subscriptions</span>
+                    </button>
                 </div>
 
                 <!-- Available Matches Header Widget (Top Right Corner) -->
@@ -1116,6 +1124,9 @@
                         <span class="nav-badge" id="message-badge"></span>
                     </div>
                 </button>
+                <button type="button" id="bottom-nav-plans-btn" title="Subscriptions & Plans" style="background: none; border: none; color: #ffd700; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                    👑
+                </button>
                 <button class="nav-item" data-view="settings-view" title="Settings">
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
@@ -1408,6 +1419,6 @@
         }
     </script>
     <!-- Application Script -->
-    <script src="app.js?v=13"></script>
+    <script src="app.js?v=14"></script>
 </body>
 </html>
