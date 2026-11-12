@@ -1837,7 +1837,7 @@ const App = {
                         }
                         if (window.stripeInstance) {
                             const isHttp = window.location.protocol === "http:" || window.location.protocol === "https:";
-                            const returnBase = isHttp ? (window.location.origin + window.location.pathname) : "https://buba.love/";
+                            const returnBase = isHttp ? (window.location.origin + window.location.pathname) : "https://sloga.online/";
                             this.showToast(`Opening Stripe Checkout for ${label}... 💳`, "default");
                             window.stripeInstance.redirectToCheckout({
                                 lineItems: [{ price: configuredLinkOrPrice, quantity: 1 }],
