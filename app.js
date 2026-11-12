@@ -701,12 +701,12 @@ const App = {
             this.syncSettingsFormWithState();
             const cleanUrl = window.location.origin + window.location.pathname;
             window.history.replaceState({}, document.title, cleanUrl);
-            const planTitles = { silver: "BUBA Silver", bronze: "BUBA Bronze", gold: "BUBA Gold 👑" };
+            const planTitles = { silver: "SLOGA Silver", bronze: "SLOGA Bronze", gold: "SLOGA Gold 👑" };
             this.proceedToMainApp(`${planTitles[normalizedPlan]} Subscription Activated via Stripe! 💳✨`);
             return;
         }
         
-        // Show Log In to O-Buba page
+        // Show Log In to O-Sloga page
         this.showLoginPage();
 
         if (urlParams.get("open_plans") === "1") {
@@ -715,12 +715,12 @@ const App = {
     },
 
     setupEventListeners() {
-        // Log Out Button Handlers -> Displays Log In to O-Buba page
+        // Log Out Button Handlers -> Displays Log In to O-Sloga page
         const handleLogout = () => {
             localStorage.setItem("buba_logged_in", "false");
             localStorage.setItem("buba_has_setup", "false");
             this.showLoginPage();
-            this.showToast("Logged out successfully. Welcome to Log In to O-Buba! ✨", "default");
+            this.showToast("Logged out successfully. Welcome to Log In to O-Sloga! ✨", "default");
         };
 
         const headerLogoutBtn = document.getElementById("header-logout-btn");
@@ -840,7 +840,7 @@ const App = {
                     return;
                 }
 
-                this.proceedToMainApp("Logged in via Password! Welcome to O-Buba ✨");
+                this.proceedToMainApp("Logged in via Password! Welcome to O-Sloga ✨");
             } else {
                 const matchesPasscode = !savedPasscode ? true : (passcode === savedPasscode);
                 if (savedPasscode && passcode && !matchesPasscode) {
@@ -849,7 +849,7 @@ const App = {
                     return;
                 }
 
-                this.proceedToMainApp("Logged in with Passcode PIN! Welcome to O-Buba ✨");
+                this.proceedToMainApp("Logged in with Passcode PIN! Welcome to O-Sloga ✨");
             }
         };
 
@@ -1024,7 +1024,7 @@ const App = {
                     otp_code: generatedPasscodeEmailCode,
                     passcode: currentPasscode,
                     password: currentPassword,
-                    message: `Your O-Buba verification code is: ${generatedPasscodeEmailCode}`
+                    message: `Your O-Sloga verification code is: ${generatedPasscodeEmailCode}`
                 };
 
                 this.showToast(`✉️ Sending verification code to ${email}...`, "default");
@@ -1080,7 +1080,7 @@ const App = {
                 const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
                 state.userProfile.email = email;
                 Storage.save();
-                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Buba ✨");
+                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Sloga ✨");
             });
         }
 
@@ -1134,7 +1134,7 @@ const App = {
                     otp_code: generatedPwdEmailCode,
                     passcode: currentPasscode,
                     password: currentPassword,
-                    message: `Your O-Buba verification code is: ${generatedPwdEmailCode}`
+                    message: `Your O-Sloga verification code is: ${generatedPwdEmailCode}`
                 };
 
                 this.showToast(`✉️ Sending verification code to ${email}...`, "default");
@@ -1190,7 +1190,7 @@ const App = {
                 const email = resetEmailInput ? resetEmailInput.value.trim() : "";
                 state.userProfile.email = email;
                 Storage.save();
-                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Buba ✨");
+                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Sloga ✨");
             });
         }
 
@@ -1435,7 +1435,7 @@ const App = {
                 this.renderSidebarMatches();
                 this.renderSidebarConversations();
                 
-                this.showToast("Profile setup complete! Welcome to O-Buba Matches ✨", "default");
+                this.showToast("Profile setup complete! Welcome to O-Sloga Matches ✨", "default");
             });
         }
 
@@ -1783,10 +1783,10 @@ const App = {
                 else if (state.selectedPaymentMethod === "googlepay") methodLabel = "Google Pay";
                 else if (state.selectedPaymentMethod === "bank") methodLabel = "Bank Transfer";
 
-                // If paying for a BUBA subscription plan and a Stripe Payment Link is configured, redirect directly to Stripe Checkout
+                // If paying for a SLOGA subscription plan and a Stripe Payment Link is configured, redirect directly to Stripe Checkout
                 if (state.activePaymentType === "plan" && state.selectedPlanToPay) {
                     const planName = state.selectedPlanToPay;
-                    const label = state.selectedPlanLabelToPay || "BUBA Plan";
+                    const label = state.selectedPlanLabelToPay || "SLOGA Plan";
                     const configuredLinkOrPrice = (state.stripePlanLinks && state.stripePlanLinks[planName]) ? state.stripePlanLinks[planName].trim() : "";
 
                     if (configuredLinkOrPrice.startsWith("https://buy.stripe.com/") || configuredLinkOrPrice.startsWith("https://checkout.stripe.com/")) {
@@ -1827,7 +1827,7 @@ const App = {
 
                 if (state.activePaymentType === "plan" && state.selectedPlanToPay) {
                     const planName = state.selectedPlanToPay;
-                    const label = state.selectedPlanLabelToPay || "BUBA Plan";
+                    const label = state.selectedPlanLabelToPay || "SLOGA Plan";
                     const configuredLinkOrPrice = (state.stripePlanLinks && state.stripePlanLinks[planName]) ? state.stripePlanLinks[planName].trim() : "";
 
                     // 2. Client-only Stripe Checkout via Publishable Key + Price ID (price_...)
@@ -1894,7 +1894,7 @@ const App = {
             });
         }
 
-        // Buba Subscription Plans Modal interactions
+        // Sloga Subscription Plans Modal interactions
         const resetPlanCardsState = () => {
             if (DOM.plansModal) {
                 const currentPlan = state.userSubscription || "free";
@@ -1967,17 +1967,17 @@ const App = {
             DOM.planSelectBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
                     const planName = btn.getAttribute("data-plan");
-                    let label = "BUBA Free";
+                    let label = "SLOGA Free";
                     let priceText = "Free";
 
                     if (planName === "silver") {
-                        label = "BUBA Silver";
+                        label = "SLOGA Silver";
                         priceText = "$0.99 / weekly";
                     } else if (planName === "bronze") {
-                        label = "BUBA Bronze";
+                        label = "SLOGA Bronze";
                         priceText = "$5.99 / monthly";
                     } else if (planName === "gold") {
-                        label = "BUBA Gold";
+                        label = "SLOGA Gold";
                         priceText = "$11.99 / monthly";
                     }
 
@@ -1987,7 +1987,7 @@ const App = {
                         closePlansFunc();
                         this.updateOwnProfileDOM();
                         this.syncSettingsFormWithState();
-                        this.showToast("Plan set to BUBA Free ✨", "default");
+                        this.showToast("Plan set to SLOGA Free ✨", "default");
                     } else {
                         const configuredLink = (state.stripePlanLinks && state.stripePlanLinks[planName]) ? state.stripePlanLinks[planName].trim() : "";
                         if (configuredLink.startsWith("https://buy.stripe.com/") || configuredLink.startsWith("https://checkout.stripe.com/")) {
@@ -2058,10 +2058,10 @@ const App = {
         DOM.settingsAvatarPreview.src = state.userProfile.avatar;
 
         const planLabels = {
-            free: "BUBA Free",
-            silver: "BUBA Silver 🌟",
-            bronze: "BUBA Bronze 🥉",
-            gold: "BUBA Gold 👑"
+            free: "SLOGA Free",
+            silver: "SLOGA Silver 🌟",
+            bronze: "SLOGA Bronze 🥉",
+            gold: "SLOGA Gold 👑"
         };
         const methodLabels = {
             applepay: " Pay",
@@ -2069,7 +2069,7 @@ const App = {
             googlepay: "G Pay",
             bank: "🏦 Bank"
         };
-        const activePlanLabel = planLabels[state.userSubscription || "free"] || "BUBA Free";
+        const activePlanLabel = planLabels[state.userSubscription || "free"] || "SLOGA Free";
         const activeMethodLabel = methodLabels[state.userProfile.savedPaymentMethod || "applepay"] || " Pay";
         const subtextEl = document.querySelector(".user-profile-subtext");
         if (subtextEl) {
@@ -2324,12 +2324,12 @@ const App = {
                 bank: "🏦 Bank Active"
             };
             const planLabels = {
-                free: "BUBA Free",
-                silver: "BUBA Silver 🌟",
-                bronze: "BUBA Bronze 🥉",
-                gold: "BUBA Gold 👑"
+                free: "SLOGA Free",
+                silver: "SLOGA Silver 🌟",
+                bronze: "SLOGA Bronze 🥉",
+                gold: "SLOGA Gold 👑"
             };
-            const activePlanLabel = planLabels[state.userSubscription || "free"] || "BUBA Free";
+            const activePlanLabel = planLabels[state.userSubscription || "free"] || "SLOGA Free";
 
             if (DOM.savedPaymentMethodName) {
                 DOM.savedPaymentMethodName.textContent = labels[savedMethod] || "Apple Pay (Primary)";
@@ -2776,7 +2776,7 @@ const App = {
                     topCard.classList.add("transition-back");
                     topCard.style.transform = "";
                     likeStamp.style.opacity = 0;
-                    this.openPlansModal("Liking profiles to match requires BUBA Silver (5 likes/day), Bronze, or Gold! Upgrade to unlock.");
+                    this.openPlansModal("Liking profiles to match requires SLOGA Silver (5 likes/day), Bronze, or Gold! Upgrade to unlock.");
                 } else if (state.userSubscription === "silver") {
                     const today = new Date().toDateString();
                     if (state.lastLikeResetDate !== today) {
@@ -2788,7 +2788,7 @@ const App = {
                         topCard.classList.add("transition-back");
                         topCard.style.transform = "";
                         likeStamp.style.opacity = 0;
-                        this.openPlansModal("Daily like limit reached (5/day for Silver users)! Upgrade to BUBA Bronze for unlimited likes.");
+                        this.openPlansModal("Daily like limit reached (5/day for Silver users)! Upgrade to SLOGA Bronze for unlimited likes.");
                     } else {
                         state.likeCountToday++;
                         Storage.save();
@@ -2808,7 +2808,7 @@ const App = {
                     topCard.classList.add("transition-back");
                     topCard.style.transform = "";
                     nopeStamp.style.opacity = 0;
-                    this.openPlansModal("Daily pass limit reached (10/day for Free users)! Upgrade to BUBA Silver for unlimited passes.");
+                    this.openPlansModal("Daily pass limit reached (10/day for Free users)! Upgrade to SLOGA Silver for unlimited passes.");
                 } else {
                     if (state.userSubscription === "free") {
                         state.passCountToday++;
@@ -2821,7 +2821,7 @@ const App = {
                     topCard.classList.add("transition-back");
                     topCard.style.transform = "";
                     superStamp.style.opacity = 0;
-                    this.openPlansModal("Super Like requires BUBA Silver, Bronze, or Gold! Upgrade to unlock.");
+                    this.openPlansModal("Super Like requires SLOGA Silver, Bronze, or Gold! Upgrade to unlock.");
                 } else {
                     this.executeSwipe(topCard, "up");
                 }
@@ -3105,7 +3105,7 @@ const App = {
         }
 
         if (state.userSubscription === "free" && state.passCountToday >= 10) {
-            this.openPlansModal("Daily pass limit reached (10/day for Free users)! Upgrade to BUBA Silver for unlimited passes.");
+            this.openPlansModal("Daily pass limit reached (10/day for Free users)! Upgrade to SLOGA Silver for unlimited passes.");
             return;
         }
 
@@ -3118,16 +3118,16 @@ const App = {
     },
 
     handleLikeClick() {
-        this.openPlansModal("Choose a BUBA Plan to unlock Likes and matching features! ❤️");
+        this.openPlansModal("Choose a SLOGA Plan to unlock Likes and matching features! ❤️");
     },
 
     handleSuperlikeClick() {
-        this.openPlansModal("Choose a BUBA Plan to unlock Super Likes! ⭐");
+        this.openPlansModal("Choose a SLOGA Plan to unlock Super Likes! ⭐");
     },
 
     handleRewindClick() {
         if (state.userSubscription === "free") {
-            this.openPlansModal("Rewind requires BUBA Silver (5 rewinds/day) or higher! Upgrade to unlock.");
+            this.openPlansModal("Rewind requires SLOGA Silver (5 rewinds/day) or higher! Upgrade to unlock.");
             return;
         }
 
@@ -3140,7 +3140,7 @@ const App = {
             }
 
             if (state.rewindCountToday >= 5) {
-                this.openPlansModal("Daily rewind limit reached (5/day for Silver users)! Upgrade to BUBA Bronze for unlimited rewinds.");
+                this.openPlansModal("Daily rewind limit reached (5/day for Silver users)! Upgrade to SLOGA Bronze for unlimited rewinds.");
                 return;
             }
 
@@ -3153,7 +3153,7 @@ const App = {
 
     handleBoostClick() {
         if (state.userSubscription !== "gold") {
-            this.openPlansModal("Profile Boost requires BUBA Gold! Upgrade to unlock 1-week 3x visibility boost.", "gold");
+            this.openPlansModal("Profile Boost requires SLOGA Gold! Upgrade to unlock 1-week 3x visibility boost.", "gold");
             return;
         }
         this.activateBoost();
