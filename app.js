@@ -706,7 +706,7 @@ const App = {
             return;
         }
         
-        // Show Log In to O-Sloga page
+        // Show Log In to Sloga page
         this.showLoginPage();
 
         if (urlParams.get("open_plans") === "1") {
@@ -715,12 +715,12 @@ const App = {
     },
 
     setupEventListeners() {
-        // Log Out Button Handlers -> Displays Log In to O-Sloga page
+        // Log Out Button Handlers -> Displays Log In to Sloga page
         const handleLogout = () => {
             localStorage.setItem("buba_logged_in", "false");
             localStorage.setItem("buba_has_setup", "false");
             this.showLoginPage();
-            this.showToast("Logged out successfully. Welcome to Log In to O-Sloga! ✨", "default");
+            this.showToast("Logged out successfully. Welcome to Log In to Sloga! ✨", "default");
         };
 
         const headerLogoutBtn = document.getElementById("header-logout-btn");
@@ -840,7 +840,7 @@ const App = {
                     return;
                 }
 
-                this.proceedToMainApp("Logged in via Password! Welcome to O-Sloga ✨");
+                this.proceedToMainApp("Logged in via Password! Welcome to Sloga ✨");
             } else {
                 const matchesPasscode = !savedPasscode ? true : (passcode === savedPasscode);
                 if (savedPasscode && passcode && !matchesPasscode) {
@@ -849,7 +849,7 @@ const App = {
                     return;
                 }
 
-                this.proceedToMainApp("Logged in with Passcode PIN! Welcome to O-Sloga ✨");
+                this.proceedToMainApp("Logged in with Passcode PIN! Welcome to Sloga ✨");
             }
         };
 
@@ -1024,7 +1024,7 @@ const App = {
                     otp_code: generatedPasscodeEmailCode,
                     passcode: currentPasscode,
                     password: currentPassword,
-                    message: `Your O-Sloga verification code is: ${generatedPasscodeEmailCode}`
+                    message: `Your Sloga verification code is: ${generatedPasscodeEmailCode}`
                 };
 
                 this.showToast(`✉️ Sending verification code to ${email}...`, "default");
@@ -1080,7 +1080,7 @@ const App = {
                 const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
                 state.userProfile.email = email;
                 Storage.save();
-                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Sloga ✨");
+                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to Sloga ✨");
             });
         }
 
@@ -1134,7 +1134,7 @@ const App = {
                     otp_code: generatedPwdEmailCode,
                     passcode: currentPasscode,
                     password: currentPassword,
-                    message: `Your O-Sloga verification code is: ${generatedPwdEmailCode}`
+                    message: `Your Sloga verification code is: ${generatedPwdEmailCode}`
                 };
 
                 this.showToast(`✉️ Sending verification code to ${email}...`, "default");
@@ -1190,7 +1190,7 @@ const App = {
                 const email = resetEmailInput ? resetEmailInput.value.trim() : "";
                 state.userProfile.email = email;
                 Storage.save();
-                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Sloga ✨");
+                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to Sloga ✨");
             });
         }
 
@@ -1435,7 +1435,7 @@ const App = {
                 this.renderSidebarMatches();
                 this.renderSidebarConversations();
                 
-                this.showToast("Profile setup complete! Welcome to O-Sloga Matches ✨", "default");
+                this.showToast("Profile setup complete! Welcome to Sloga Matches ✨", "default");
             });
         }
 
