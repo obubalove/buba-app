@@ -764,7 +764,7 @@ const App = {
                 if (forgotPasswordBtn) forgotPasswordBtn.style.display = "inline-block";
                 if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "none";
                 if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In";
-                if (loginSubtitle) loginSubtitle.textContent = "Enter your name and password to access your profile.";
+                if (loginSubtitle) loginSubtitle.textContent = "Enter your email and password to access your profile.";
             } else {
                 if (btnOptPasscode) {
                     btnOptPasscode.classList.add("active");
@@ -783,7 +783,7 @@ const App = {
                 if (forgotPasswordBtn) forgotPasswordBtn.style.display = "none";
                 if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "inline-block";
                 if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In";
-                if (loginSubtitle) loginSubtitle.textContent = "Enter your name and your 4-digit passcode PIN.";
+                if (loginSubtitle) loginSubtitle.textContent = "Enter your email and your 4-digit passcode PIN.";
             }
         };
 
@@ -813,10 +813,11 @@ const App = {
             const savedPasscode = state.userProfile.passcode || "1234";
 
             if (nameOrEmail) {
+                state.userProfile.email = nameOrEmail;
                 if (nameOrEmail.includes("@")) {
-                    state.userProfile.email = nameOrEmail;
-                    if (!state.userProfile.name) state.userProfile.name = nameOrEmail.split("@")[0];
-                    if (!state.userProfile.firstName) state.userProfile.firstName = nameOrEmail.split("@")[0];
+                    const emailPrefix = nameOrEmail.split("@")[0];
+                    if (!state.userProfile.name || state.userProfile.name === "Alex") state.userProfile.name = emailPrefix;
+                    if (!state.userProfile.firstName || state.userProfile.firstName === "Alex") state.userProfile.firstName = emailPrefix;
                 } else {
                     state.userProfile.firstName = nameOrEmail;
                     state.userProfile.name = nameOrEmail;
