@@ -627,7 +627,7 @@ const Storage = {
                         gold: useLinkOrDefault(parsed.stripePlanLinks.gold, "https://buy.stripe.com/5kQaEY3M15sV1pFeoE7ok05")
                     };
                 }
-                state.passCountToday = parsed.passCountToday || 0;
+                state.passCountToday = (parsed.passCountToday && parsed.passCountToday < 10) ? parsed.passCountToday : 0;
                 state.lastPassResetDate = parsed.lastPassResetDate || "";
                 state.likeCountToday = parsed.likeCountToday || 0;
                 state.lastLikeResetDate = parsed.lastLikeResetDate || "";
@@ -2798,24 +2798,20 @@ const App = {
                     this.executeSwipe(topCard, "right");
                 }
             } else if (deltaX < -swipeThreshold) {
-                const today = new Date().toDateString();
-                if (state.lastPassResetDate !== today) {
-                    state.passCountToday = 0;
-                    state.lastPassResetDate = today;
+                if (state.userSubscription === "free") {
+                    state.passCountToday = (state.passCountToday || 0) + 1;
+                    if (state.passCountToday >= 10) {
+                        state.passCountToday = 0;
+                        Storage.save();
+                        topCard.classList.add("transition-back");
+                        topCard.style.transform = "";
+                        nopeStamp.style.opacity = 0;
+                        this.openPlansModal("You've passed 10 profiles! Upgrade to SLOGA Silver for unlimited passes.");
+                        return;
+                    }
                     Storage.save();
                 }
-                if (state.userSubscription === "free" && state.passCountToday >= 10) {
-                    topCard.classList.add("transition-back");
-                    topCard.style.transform = "";
-                    nopeStamp.style.opacity = 0;
-                    this.openPlansModal("Daily pass limit reached (10/day for Free users)! Upgrade to SLOGA Silver for unlimited passes.");
-                } else {
-                    if (state.userSubscription === "free") {
-                        state.passCountToday++;
-                        Storage.save();
-                    }
-                    this.executeSwipe(topCard, "left");
-                }
+                this.executeSwipe(topCard, "left");
             } else if (deltaY < -superSwipeThreshold && Math.abs(deltaY) > Math.abs(deltaX)) {
                 if (state.userSubscription === "free") {
                     topCard.classList.add("transition-back");
@@ -2947,7 +2943,11 @@ const App = {
             }
             
             Storage.save();
-            this.initSwipeGesturePhysics();
+            if (state.deck.length === 0) {
+                this.generateDeck();
+            } else {
+                this.initSwipeGesturePhysics();
+            }
         }, 200);
     },
 
@@ -3097,23 +3097,21 @@ const App = {
     },
 
     handleNopeClick() {
-        const today = new Date().toDateString();
-        if (state.lastPassResetDate !== today) {
-            state.passCountToday = 0;
-            state.lastPassResetDate = today;
-            Storage.save();
-        }
-
-        if (state.userSubscription === "free" && state.passCountToday >= 10) {
-            this.openPlansModal("Daily pass limit reached (10/day for Free users)! Upgrade to SLOGA Silver for unlimited passes.");
-            return;
-        }
-
         if (state.userSubscription === "free") {
-            state.passCountToday++;
+            state.passCountToday = (state.passCountToday || 0) + 1;
+            if (state.passCountToday >= 10) {
+                state.passCountToday = 0;
+                Storage.save();
+                this.openPlansModal("You've passed 10 profiles! Upgrade to SLOGA Silver for unlimited passes.");
+                return;
+            }
             Storage.save();
         }
 
+        const topCard = DOM.cardStackDeck ? DOM.cardStackDeck.querySelector(".dating-card:last-child") : null;
+        if (!topCard || topCard.classList.contains("deck-loader")) {
+            this.generateDeck();
+        }
         this.swipeTopCard("left");
     },
 
