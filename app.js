@@ -623,6 +623,112 @@ function spawnDynamicProfile(preferredGender, preferredCountries, maxAge) {
     return profile;
 }
 
+// Persistent Registry for all Newly Registered User Profiles on Sloga
+function registerUserIntoCandidatePool(userObj) {
+    if (!userObj) return null;
+    const rawName = (userObj.firstName || userObj.name || "").trim();
+    if (!rawName || rawName.toLowerCase() === "alex") return null;
+
+    const displayName = userObj.name || (userObj.firstName + (userObj.surname ? " " + userObj.surname : "")).trim();
+    const slug = (userObj.email || displayName).toLowerCase().replace(/[^a-z0-9]/g, "_");
+    const profileId = `reg_${slug}`;
+
+    let flag = "🇲🇰";
+    if (userObj.orthodoxRoots) {
+        const flagMatch = userObj.orthodoxRoots.match(/^(\S+)/);
+        if (flagMatch) flag = flagMatch[1];
+    }
+    const countryName = (userObj.country || "Australia").trim() || "Australia";
+    const townName = (userObj.town || userObj.state || "Local").trim() || "Local";
+    const locationLabel = `${townName}, ${countryName}`;
+    const primaryPhoto = userObj.avatar || (userObj.photos && userObj.photos[0]) || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600";
+    const photosList = (Array.isArray(userObj.photos) && userObj.photos.length > 0) ? [...userObj.photos] : [primaryPhoto];
+    if (userObj.avatar && !photosList.includes(userObj.avatar)) {
+        photosList.unshift(userObj.avatar);
+    }
+
+    const candidateObj = {
+        id: profileId,
+        name: displayName,
+        age: parseInt(userObj.age) || 26,
+        gender: userObj.gender === "woman" ? "woman" : "man",
+        country: countryName,
+        countryFlag: flag,
+        location: locationLabel,
+        distance: "2 kilometres away",
+        bio: userObj.bio || `New Sloga member from ${locationLabel}. Looking for genuine connections and shared values! ✨`,
+        passions: ["Faith", "Family", "Coffee", "Travel", "Tradition"],
+        photos: photosList,
+        song: "Golden Hour",
+        artist: "Sloga Favorites",
+        matchChance: 1.0,
+        isNewlyRegistered: true,
+        registeredAt: Date.now(),
+        chatReplies: [
+            `Hi! I just registered on Sloga from ${locationLabel}! Great to match with you! ✨`,
+            `Thanks for reaching out! How is your week going? ☕`,
+            `Let's definitely catch up for coffee soon! ❤️`
+        ]
+    };
+
+    // Save to persistent localStorage registry of all registered profiles
+    let regList = [];
+    try {
+        const raw = localStorage.getItem("sloga_registered_profiles");
+        if (raw) regList = JSON.parse(raw) || [];
+    } catch (e) {
+        regList = [];
+    }
+    const existingRegIdx = regList.findIndex(p => p.id === profileId || (p.name && p.name.toLowerCase() === displayName.toLowerCase()));
+    if (existingRegIdx !== -1) {
+        regList[existingRegIdx] = candidateObj;
+    } else {
+        regList.unshift(candidateObj);
+    }
+    try {
+        localStorage.setItem("sloga_registered_profiles", JSON.stringify(regList));
+    } catch (e) {}
+
+    syncRegisteredProfilesIntoPool();
+    return candidateObj;
+}
+
+function syncRegisteredProfilesIntoPool() {
+    let regList = [];
+    try {
+        const raw = localStorage.getItem("sloga_registered_profiles");
+        if (raw) regList = JSON.parse(raw) || [];
+    } catch (e) {
+        regList = [];
+    }
+    if (!Array.isArray(regList)) return;
+
+    regList.forEach(regProfile => {
+        if (!regProfile || !regProfile.id) return;
+        const existingIdx = CANDIDATE_PROFILES.findIndex(p => p.id === regProfile.id || (p.name && regProfile.name && p.name.toLowerCase() === regProfile.name.toLowerCase()));
+        if (existingIdx !== -1) {
+            CANDIDATE_PROFILES[existingIdx] = Object.assign({}, CANDIDATE_PROFILES[existingIdx], regProfile);
+        } else {
+            CANDIDATE_PROFILES.unshift(regProfile);
+        }
+
+        const matchedId = existingIdx !== -1 ? CANDIDATE_PROFILES[existingIdx].id : regProfile.id;
+        const matchedProfile = existingIdx !== -1 ? CANDIDATE_PROFILES[existingIdx] : regProfile;
+        if (state && Array.isArray(state.matches) && !state.matches.some(m => m.id === matchedId)) {
+            state.matches.unshift({
+                id: matchedId,
+                timestamp: "New Member ✨",
+                name: matchedProfile.name,
+                avatar: (matchedProfile.photos && matchedProfile.photos[0]) || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600",
+                profile: matchedProfile
+            });
+            if (state.chats && !state.chats[matchedId]) {
+                state.chats[matchedId] = [];
+            }
+        }
+    });
+}
+
 const DEFAULT_USER_PHOTOS = [
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300",
     "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=300",
@@ -927,6 +1033,8 @@ const Storage = {
                     });
                 }
                 state.chats = parsed.chats || state.chats;
+                registerUserIntoCandidatePool(state.userProfile);
+                syncRegisteredProfilesIntoPool();
                 state.selectedCurrency = parsed.selectedCurrency || state.selectedCurrency;
                 state.userSubscription = parsed.userSubscription || state.userSubscription;
                 state.stripeAccountId = parsed.stripeAccountId || state.stripeAccountId || "acct_1UNWStLls49bwhzx";
@@ -1784,35 +1892,12 @@ const App = {
                 }
                 
                 state.userProfile.isLicenseVerified = true;
+                registerUserIntoCandidatePool(state.userProfile);
                 localStorage.setItem("buba_logged_in", "true");
                 localStorage.setItem("buba_has_setup", "true");
                 Storage.save();
                 
                 this.updateOwnProfileDOM();
-                
-                // If no matches exist yet, populate sample matches for immediate discovery
-                if (state.matches.length === 0 && CANDIDATE_PROFILES.length >= 3) {
-                    state.matches = [
-                        {
-                            id: CANDIDATE_PROFILES[0].id,
-                            name: CANDIDATE_PROFILES[0].name,
-                            avatar: CANDIDATE_PROFILES[0].photos[0],
-                            timestamp: "Just now"
-                        },
-                        {
-                            id: CANDIDATE_PROFILES[2].id,
-                            name: CANDIDATE_PROFILES[2].name,
-                            avatar: CANDIDATE_PROFILES[2].photos[0],
-                            timestamp: "Today"
-                        },
-                        {
-                            id: CANDIDATE_PROFILES[6].id,
-                            name: CANDIDATE_PROFILES[6].name,
-                            avatar: CANDIDATE_PROFILES[6].photos[0],
-                            timestamp: "Yesterday"
-                        }
-                    ];
-                }
 
                 // Open main app workspace & match pages
                 DOM.app.classList.remove("onboarding-active");
@@ -1825,8 +1910,9 @@ const App = {
                 this.generateDeck();
                 this.renderSidebarMatches();
                 this.renderSidebarConversations();
+                this.startConstantMatchEngine();
                 
-                this.showToast("Profile setup complete! Welcome to Sloga Matches ✨", "default");
+                this.showToast(`Profile setup complete! ${state.userProfile.name} is now live on Sloga Matches ✨`, "default");
             });
         }
 
@@ -2825,13 +2911,15 @@ const App = {
         }
         this.initStripeSDK();
         
+        registerUserIntoCandidatePool(state.userProfile);
         Storage.save();
         this.updateOwnProfileDOM();
         DOM.settingsView.classList.remove("active");
         
         // Re-generate deck based on updated filters
         this.generateDeck();
-        this.showToast("Preferences saved!", "default");
+        this.renderSidebarMatches();
+        this.showToast("Preferences saved & profile synced!", "default");
     },
 
     // 7. CARD DECK BUILDER & GESTURES
@@ -2854,7 +2942,12 @@ const App = {
         const maxDistanceKm = state.userProfile.prefDistance || 100;
         const selectedCountries = state.userProfile.prefCountries || ["all"];
 
+        syncRegisteredProfilesIntoPool();
+
         let filtered = CANDIDATE_PROFILES.filter(candidate => {
+            // Always show newly registered profiles first unless already swiped in this session
+            if (candidate.isNewlyRegistered && !state.swipes[candidate.id]) return true;
+
             // Check gender preference
             if (prefGender !== "everyone") {
                 const targetGender = prefGender === "women" ? "woman" : "man";
@@ -2882,6 +2975,7 @@ const App = {
         // Fallback: if distance filter is strict and no candidates remain, find closest candidates in chosen location & age range
         if (filtered.length === 0) {
             const locationPool = CANDIDATE_PROFILES.filter(candidate => {
+                if (candidate.isNewlyRegistered) return true;
                 if (prefGender !== "everyone") {
                     const targetGender = prefGender === "women" ? "woman" : "man";
                     if (candidate.gender !== targetGender) return false;
@@ -2906,15 +3000,20 @@ const App = {
             filtered.push(spawned);
         }
 
-        // Sort by Perfect Match criteria: closest kilometres distance first, then closest age match
+        // Note: the LAST element in state.deck is rendered on TOP of the DOM card stack (:last-child).
+        // Sort so newly registered and closest profiles are at the end of filtered (top of visual stack).
         filtered.sort((a, b) => {
+            const regA = a.isNewlyRegistered ? 1 : 0;
+            const regB = b.isNewlyRegistered ? 1 : 0;
+            if (regA !== regB) return regA - regB;
+
             const distA = parseInt(a.distance) || 0;
             const distB = parseInt(b.distance) || 0;
+            if (distA !== distB) return distB - distA;
+
             const ageA = Math.abs(a.age - (state.userProfile.age || 25));
             const ageB = Math.abs(b.age - (state.userProfile.age || 25));
-
-            if (distA !== distB) return distA - distB;
-            return ageA - ageB;
+            return ageB - ageA;
         });
 
         state.deck = filtered;
