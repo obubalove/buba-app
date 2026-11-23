@@ -309,8 +309,250 @@ const CANDIDATE_PROFILES = [
             "Come by my studio in Malmö! I can show you how to throw your first clay vase.",
             "Sounds like fun! Let's schedule a pottery studio session this Sunday!"
         ]
+    },
+    {
+        id: "anastasija",
+        name: "Anastasija",
+        age: 24,
+        gender: "woman",
+        country: "Serbia",
+        countryFlag: "🇷🇸",
+        location: "Belgrade, Serbia",
+        distance: "5 kilometres away",
+        bio: "Violinist & espresso lover. Walking along Kalemegdan at sunset, Sunday liturgy at St. Sava, and late evening jazz in Dorćol. 🎻☕",
+        passions: ["Music", "Violin", "Coffee", "Faith", "History"],
+        photos: [
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Tamo Daleko",
+        artist: "Traditional",
+        matchChance: 1.0,
+        chatReplies: [
+            "Ćao! Have you ever watched the sunset from Kalemegdan fortress? 🌅",
+            "It's my favorite place in Belgrade! Let's grab coffee in Dorćol this week.",
+            "I'd love that! How about Saturday afternoon?"
+        ]
+    },
+    {
+        id: "teodora",
+        name: "Teodora",
+        age: 23,
+        gender: "woman",
+        country: "Australia",
+        countryFlag: "🇦🇺",
+        location: "Melbourne, Australia",
+        distance: "4 kilometres away",
+        bio: "Interior architect & beach lover. Proud of my Orthodox roots, Sunday family lunches, and Melbourne laneway flat whites. 🇦🇺☕✨",
+        passions: ["Architecture", "Beach", "Family", "Coffee", "Travel"],
+        photos: [
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Riptide",
+        artist: "Vance Joy",
+        matchChance: 1.0,
+        chatReplies: [
+            "Hey! So happy we matched on Sloga! Where's your go-to coffee spot? ☕",
+            "Love that spot! We should go for a coastal walk in St Kilda this weekend.",
+            "Perfect, let's lock it in for Sunday afternoon! ✨"
+        ]
+    },
+    {
+        id: "eleni",
+        name: "Eleni",
+        age: 25,
+        gender: "woman",
+        country: "Greece",
+        countryFlag: "🇬🇷",
+        location: "Thessaloniki, Greece",
+        distance: "6 kilometres away",
+        bio: "Classical philology graduate & seaside dreamer. Freddo espresso by the White Tower, Greek island summers, and genuine warmth. 🇬🇷🌊",
+        passions: ["Literature", "Sea", "Coffee", "Tradition", "Music"],
+        photos: [
+            "https://images.unsplash.com/photo-1488716820095-cbe80883c496?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1524503033411-c9566986fc8f?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Zorba's Dance",
+        artist: "Mikis Theodorakis",
+        matchChance: 1.0,
+        chatReplies: [
+            "Yassas! Freddo espresso or traditional Greek coffee by the sea? 🌊☕",
+            "Nothing beats walking along the Thessaloniki waterfront at golden hour!",
+            "Let's meet by the seafront promenade this evening! ✨"
+        ]
+    },
+    {
+        id: "natalija",
+        name: "Natalija",
+        age: 26,
+        gender: "woman",
+        country: "Germany",
+        countryFlag: "🇩🇪",
+        location: "Munich, Germany",
+        distance: "7 kilometres away",
+        bio: "Medical resident & alpine hiker. Balancing hospital shifts with weekend trips to the Bavarian Alps and traditional home cooking. 🏔️🍲",
+        passions: ["Hiking", "Cooking", "Medicine", "Alps", "Faith"],
+        photos: [
+            "https://images.unsplash.com/photo-1484399172022-72a90b12e3c1?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Wonderwall",
+        artist: "Oasis",
+        matchChance: 1.0,
+        chatReplies: [
+            "Hi! So glad we connected on Sloga! Do you enjoy hiking or city walks more? 🏔️",
+            "Same here! Fresh mountain air and a cozy dinner afterwards is unbeatable.",
+            "Let's grab coffee in Munich this week!"
+        ]
+    },
+    {
+        id: "stefan",
+        name: "Stefan",
+        age: 27,
+        gender: "man",
+        country: "Macedonia",
+        countryFlag: "🇲🇰",
+        location: "Skopje, Macedonia",
+        distance: "5 kilometres away",
+        bio: "Civil engineer, mountain climber & traditional music lover. Family, faith, and Sunday hikes up Vodno mountain. ⛰️☕",
+        passions: ["Hiking", "Architecture", "Faith", "Coffee", "Fitness"],
+        photos: [
+            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Makedonsko Devojce",
+        artist: "Jonče Hristovski",
+        matchChance: 1.0,
+        chatReplies: [
+            "Zdravo! Great to match with you on Sloga! Up for coffee in Debar Maalo? ☕",
+            "Awesome, I know a great quiet terrace there. How about tomorrow evening?"
+        ]
+    },
+    {
+        id: "nikola",
+        name: "Nikola",
+        age: 28,
+        gender: "man",
+        country: "Australia",
+        countryFlag: "🇦🇺",
+        location: "Sydney, Australia",
+        distance: "6 kilometres away",
+        bio: "Software architect & ocean swimmer. Keeping traditional values alive while enjoying Bondi sunrises and good espresso. 🌊🇦🇺",
+        passions: ["Swimming", "Tech", "Coffee", "Tradition", "Travel"],
+        photos: [
+            "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Ocean Drive",
+        artist: "Duke Dumont",
+        matchChance: 1.0,
+        chatReplies: [
+            "Hey! Happy we matched on Sloga! How is your week going? ✨",
+            "Let's grab a coffee by the harbour this weekend!"
+        ]
     }
 ];
+
+// Procedural generator to continuously create brand-new Sloga profiles so users always find new matches
+const DYNAMIC_PROFILE_POOL = {
+    womenNames: ["Marija", "Aleksandra", "Kristina", "Ivana", "Maja", "Sanja", "Dragana", "Biljana", "Viktorija", "Sara", "Emilija", "Mila", "Tijana", "Sofija", "Klara", "Darija", "Neda", "Jana", "Kalina", "Veronika", "Irina", "olga", "Despina", "Zorica"],
+    menNames: ["Marko", "Aleksandar", "Filip", "Luka", "Dimitar", "Bojan", "Goran", "Viktor", "Damjan", "Kristijan", "Darko", "Martin", "Petar", "Jovan", "Mihail", "Andrej", "Dejan", "Milan"],
+    locations: [
+        { country: "Macedonia", flag: "🇲🇰", cities: ["Skopje", "Bitola", "Ohrid", "Prilep", "Strumica", "Kumanovo"] },
+        { country: "Australia", flag: "🇦🇺", cities: ["Melbourne", "Sydney", "Perth", "Brisbane", "Wollongong"] },
+        { country: "Serbia", flag: "🇷🇸", cities: ["Belgrade", "Novi Sad", "Niš"] },
+        { country: "Greece", flag: "🇬🇷", cities: ["Thessaloniki", "Athens", "Kavala"] },
+        { country: "USA", flag: "🇺🇸", cities: ["Chicago", "New York", "Miami", "Detroit", "Los Angeles"] },
+        { country: "Canada", flag: "🇨🇦", cities: ["Toronto", "Vancouver", "Montreal"] },
+        { country: "Germany", flag: "🇩🇪", cities: ["Munich", "Berlin", "Frankfurt", "Stuttgart"] },
+        { country: "Sweden", flag: "🇸🇪", cities: ["Stockholm", "Malmö", "Gothenburg"] },
+        { country: "Switzerland", flag: "🇨🇭", cities: ["Zurich", "Geneva", "Basel"] }
+    ],
+    womenPhotos: [
+        ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1484399172022-72a90b12e3c1?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1524503033411-c9566986fc8f?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1488716820095-cbe80883c496?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1519699047748-de8e457a634e?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=600"]
+    ],
+    menPhotos: [
+        ["https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=600"],
+        ["https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600", "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600"]
+    ],
+    bios: [
+        "Family-oriented, loves traditional values, cozy coffee dates, and weekend road trips by the water. ☕✨",
+        "Passionate about music, good food, Orthodox traditions, and building a genuine connection that lasts. ❤️🕯️",
+        "Architect by day, foodie by night. Looking for someone kind, loyal, and ready for real chemistry. 🍷🌆",
+        "Loves sunset walks, homemade pastries, deep conversations, and travelling to sunny coastlines. 🌊☀️",
+        "Active lifestyle, morning espresso, and Sunday family gatherings. Let's create our own story on Sloga! ✨"
+    ],
+    passionsList: [
+        ["Coffee", "Faith", "Family", "Travel", "Music"],
+        ["Cooking", "Architecture", "Nature", "Tradition", "Art"],
+        ["Photography", "Beach", "Fitness", "Wine", "Dancing"],
+        ["Literature", "History", "Cafes", "Sunsets", "Outdoors"]
+    ]
+};
+
+let dynamicProfileCounter = 1;
+function spawnDynamicProfile(preferredGender, preferredCountries, maxAge) {
+    const idx = dynamicProfileCounter++;
+    let gender = "woman";
+    if (preferredGender === "men") gender = "man";
+    else if (preferredGender === "women") gender = "woman";
+    else gender = (idx % 3 === 0) ? "man" : "woman";
+
+    const names = gender === "woman" ? DYNAMIC_PROFILE_POOL.womenNames : DYNAMIC_PROFILE_POOL.menNames;
+    const rawName = names[(idx + Math.floor(Math.random() * names.length)) % names.length];
+    const name = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+
+    let locPool = DYNAMIC_PROFILE_POOL.locations;
+    if (preferredCountries && !preferredCountries.includes("all") && preferredCountries.length > 0) {
+        const matchingLocs = locPool.filter(l => preferredCountries.includes(l.country));
+        if (matchingLocs.length > 0) locPool = matchingLocs;
+    }
+    const locObj = locPool[idx % locPool.length];
+    const city = locObj.cities[idx % locObj.cities.length];
+
+    const capAge = Math.min(maxAge || 32, 34);
+    const age = Math.max(21, Math.min(capAge, 22 + (idx % 9)));
+    const distKm = 2 + (idx % 12);
+
+    const photoSet = gender === "woman"
+        ? DYNAMIC_PROFILE_POOL.womenPhotos[idx % DYNAMIC_PROFILE_POOL.womenPhotos.length]
+        : DYNAMIC_PROFILE_POOL.menPhotos[idx % DYNAMIC_PROFILE_POOL.menPhotos.length];
+
+    const profile = {
+        id: `sloga_live_${Date.now()}_${idx}`,
+        name: name,
+        age: age,
+        gender: gender,
+        country: locObj.country,
+        countryFlag: locObj.flag,
+        location: `${city}, ${locObj.country}`,
+        distance: `${distKm} kilometres away`,
+        bio: DYNAMIC_PROFILE_POOL.bios[idx % DYNAMIC_PROFILE_POOL.bios.length],
+        passions: DYNAMIC_PROFILE_POOL.passionsList[idx % DYNAMIC_PROFILE_POOL.passionsList.length],
+        photos: [...photoSet],
+        song: "Golden Hour",
+        artist: "Sloga Favorites",
+        matchChance: 1.0,
+        chatReplies: [
+            `Hi! So happy we matched on Sloga! How is your day going in ${city}? ✨`,
+            `I loved your profile! What do you enjoy doing on the weekend? ☕`,
+            `That sounds wonderful! Let's definitely meet up for coffee soon! ❤️`
+        ]
+    };
+    CANDIDATE_PROFILES.push(profile);
+    return profile;
+}
 
 const DEFAULT_USER_PHOTOS = [
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=300",
@@ -607,6 +849,13 @@ const Storage = {
                 state.activePhotoSlotIndex = 0;
                 state.swipes = parsed.swipes || state.swipes;
                 state.matches = parsed.matches || state.matches;
+                if (Array.isArray(state.matches)) {
+                    state.matches.forEach(m => {
+                        if (m && m.profile && !CANDIDATE_PROFILES.some(p => p.id === m.id)) {
+                            CANDIDATE_PROFILES.push(m.profile);
+                        }
+                    });
+                }
                 state.chats = parsed.chats || state.chats;
                 state.selectedCurrency = parsed.selectedCurrency || state.selectedCurrency;
                 state.userSubscription = parsed.userSubscription || state.userSubscription;
@@ -676,8 +925,67 @@ const App = {
         this.generateDeck();
         this.renderSidebarMatches();
         this.renderSidebarConversations();
+        this.startConstantMatchEngine();
         
         if (toastMsg) this.showToast(toastMsg, "default");
+    },
+
+    startConstantMatchEngine() {
+        const prefGender = state.userProfile.prefGender || "everyone";
+        const selectedCountries = state.userProfile.prefCountries || ["all"];
+        const maxAge = state.userProfile.prefMaxAge || 35;
+
+        const addSilentNewMatch = (notifyUser = false) => {
+            if (!DOM.mainApp || !DOM.mainApp.classList.contains("active")) return;
+            const newProfile = spawnDynamicProfile(prefGender, selectedCountries, maxAge);
+            if (state.matches.some(m => m.id === newProfile.id)) return;
+
+            const matchData = {
+                id: newProfile.id,
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                name: newProfile.name,
+                avatar: newProfile.photos[0],
+                profile: newProfile
+            };
+            state.matches.unshift(matchData);
+            if (!state.chats[newProfile.id]) {
+                state.chats[newProfile.id] = [];
+            }
+            Storage.save();
+            this.renderSidebarMatches();
+            this.renderSidebarConversations();
+
+            if (notifyUser) {
+                this.showToast(`💖 New Sloga Match! ${newProfile.countryFlag} ${newProfile.name}, ${newProfile.age} (${newProfile.location}) just matched with you!`, "default");
+            }
+        };
+
+        // Ensure there are fresh matches immediately on entry
+        const unchattedMatches = state.matches.filter(m => !state.chats[m.id] || state.chats[m.id].length === 0);
+        if (unchattedMatches.length < 3) {
+            const needed = 3 - unchattedMatches.length;
+            for (let i = 0; i < needed; i++) {
+                addSilentNewMatch(false);
+            }
+        }
+
+        // Continuously discover a brand-new profile match every 25 seconds while active
+        if (this._constantMatchInterval) clearInterval(this._constantMatchInterval);
+        this._constantMatchInterval = setInterval(() => {
+            const currentPrefGender = state.userProfile.prefGender || "everyone";
+            const currentCountries = state.userProfile.prefCountries || ["all"];
+            const currentMaxAge = state.userProfile.prefMaxAge || 35;
+            if (!DOM.mainApp || !DOM.mainApp.classList.contains("active")) return;
+
+            // Always spawn a new profile into the swipe deck as well
+            const deckProfile = spawnDynamicProfile(currentPrefGender, currentCountries, currentMaxAge);
+            if (state.deck && state.deck.length < 12) {
+                state.deck.unshift(deckProfile);
+            }
+
+            // And bring a new live match into the Matches & Available Now list
+            addSilentNewMatch(true);
+        }, 25000);
     },
 
     init() {
@@ -2537,6 +2845,12 @@ const App = {
             }
         }
 
+        // Constantly generate fresh profiles so the deck never runs low
+        while (filtered.length < 8) {
+            const spawned = spawnDynamicProfile(prefGender, selectedCountries, maxAge);
+            filtered.push(spawned);
+        }
+
         // Sort by Perfect Match criteria: closest kilometres distance first, then closest age match
         filtered.sort((a, b) => {
             const distA = parseInt(a.distance) || 0;
@@ -2774,30 +3088,19 @@ const App = {
             // Evaluate if swipe triggers an action or snaps back
             if (deltaX > swipeThreshold) {
                 if (state.userSubscription === "free") {
-                    topCard.classList.add("transition-back");
-                    topCard.style.transform = "";
-                    likeStamp.style.opacity = 0;
-                    this.openPlansModal("Liking profiles to match requires SLOGA Silver (5 likes/day), Bronze, or Gold! Upgrade to unlock.");
-                } else if (state.userSubscription === "silver") {
-                    const today = new Date().toDateString();
-                    if (state.lastLikeResetDate !== today) {
+                    state.likeCountToday = (state.likeCountToday || 0) + 1;
+                    if (state.likeCountToday >= 10) {
                         state.likeCountToday = 0;
-                        state.lastLikeResetDate = today;
                         Storage.save();
-                    }
-                    if (state.likeCountToday >= 5) {
                         topCard.classList.add("transition-back");
                         topCard.style.transform = "";
                         likeStamp.style.opacity = 0;
-                        this.openPlansModal("Daily like limit reached (5/day for Silver users)! Upgrade to SLOGA Bronze for unlimited likes.");
-                    } else {
-                        state.likeCountToday++;
-                        Storage.save();
-                        this.executeSwipe(topCard, "right");
+                        this.openPlansModal("You've matched with 10 profiles! Upgrade to SLOGA Silver, Bronze, or Gold for more matches.");
+                        return;
                     }
-                } else {
-                    this.executeSwipe(topCard, "right");
+                    Storage.save();
                 }
+                this.executeSwipe(topCard, "right");
             } else if (deltaX < -swipeThreshold) {
                 if (state.userSubscription === "free") {
                     state.passCountToday = (state.passCountToday || 0) + 1;
@@ -3117,11 +3420,39 @@ const App = {
     },
 
     handleLikeClick() {
-        this.openPlansModal("Choose a SLOGA Plan to unlock Likes and matching features! ❤️");
+        if (state.userSubscription === "free") {
+            state.likeCountToday = (state.likeCountToday || 0) + 1;
+            if (state.likeCountToday >= 10) {
+                state.likeCountToday = 0;
+                Storage.save();
+                this.openPlansModal("You've matched with 10 profiles! Upgrade to SLOGA Silver, Bronze, or Gold for unlimited matches! ❤️");
+                return;
+            }
+            Storage.save();
+        }
+        const topCard = DOM.cardStackDeck ? DOM.cardStackDeck.querySelector(".dating-card:last-child") : null;
+        if (!topCard || topCard.classList.contains("deck-loader")) {
+            this.generateDeck();
+        }
+        this.swipeTopCard("right");
     },
 
     handleSuperlikeClick() {
-        this.openPlansModal("Choose a SLOGA Plan to unlock Super Likes! ⭐");
+        if (state.userSubscription === "free") {
+            state.likeCountToday = (state.likeCountToday || 0) + 1;
+            if (state.likeCountToday >= 10) {
+                state.likeCountToday = 0;
+                Storage.save();
+                this.openPlansModal("Choose a SLOGA Plan to unlock unlimited Super Likes! ⭐");
+                return;
+            }
+            Storage.save();
+        }
+        const topCard = DOM.cardStackDeck ? DOM.cardStackDeck.querySelector(".dating-card:last-child") : null;
+        if (!topCard || topCard.classList.contains("deck-loader")) {
+            this.generateDeck();
+        }
+        this.swipeTopCard("up");
     },
 
     handleRewindClick() {
@@ -3195,26 +3526,10 @@ const App = {
         const candidate = CANDIDATE_PROFILES.find(p => p.id === candidateId);
         if (!candidate) return;
 
-        // Boost modifier
-        let chance = candidate.matchChance;
-        if (state.boostActive) {
-            chance = Math.min(chance * 2.5, 0.95);
-        }
-        
-        // Superlikes increase chance
-        if (swipeType === "up") {
-            chance = Math.min(chance * 1.5, 0.98);
-        }
-
-        // Match decision
-        const isMatched = Math.random() < chance;
-        
-        if (isMatched) {
-            // Trigger match after card completes fly-out
-            setTimeout(() => {
-                this.triggerMatch(candidate);
-            }, 300);
-        }
+        // Always trigger a match when liking or superliking on Sloga
+        setTimeout(() => {
+            this.triggerMatch(candidate);
+        }, 300);
     },
 
     triggerMatch(candidate) {
@@ -3226,7 +3541,8 @@ const App = {
             id: candidate.id,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             name: candidate.name,
-            avatar: candidate.photos[0]
+            avatar: candidate.photos[0],
+            profile: candidate
         };
         state.matches.unshift(matchData);
         
