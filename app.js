@@ -826,8 +826,8 @@ const Storage = {
             try {
                 const parsed = JSON.parse(stored);
                 state.userProfile = parsed.userProfile || state.userProfile;
-                if (!state.userProfile.savedPaymentMethod) {
-                    state.userProfile.savedPaymentMethod = "applepay";
+                if (!state.userProfile.savedPaymentMethod || state.userProfile.savedPaymentMethod === "applepay") {
+                    state.userProfile.savedPaymentMethod = "card";
                 }
                 if (!state.userProfile.avatarShape) {
                     state.userProfile.avatarShape = "square";
@@ -2379,10 +2379,9 @@ const App = {
             bank: "🏦 Bank"
         };
         const activePlanLabel = planLabels[state.userSubscription || "free"] || "SLOGA Free";
-        const activeMethodLabel = methodLabels[state.userProfile.savedPaymentMethod || "applepay"] || " Pay";
         const subtextEl = document.querySelector(".user-profile-subtext");
         if (subtextEl) {
-            subtextEl.textContent = `${activePlanLabel} • ${activeMethodLabel}`;
+            subtextEl.textContent = activePlanLabel;
         }
 
         if (state.userProfile.isLicenseVerified) {
@@ -2618,20 +2617,10 @@ const App = {
         });
 
         if (DOM.settingsSavedPaymentSelect) {
-            const savedMethod = state.userProfile.savedPaymentMethod || "applepay";
+            const savedMethod = (state.userProfile.savedPaymentMethod && state.userProfile.savedPaymentMethod !== "applepay")
+                ? state.userProfile.savedPaymentMethod
+                : "card";
             DOM.settingsSavedPaymentSelect.value = savedMethod;
-            const labels = {
-                applepay: "Apple Pay (Primary)",
-                card: "Credit / Debit Card",
-                googlepay: "Google Pay",
-                bank: "Bank Transfer"
-            };
-            const pills = {
-                applepay: " Pay Active",
-                card: "💳 Card Active",
-                googlepay: "G Pay Active",
-                bank: "🏦 Bank Active"
-            };
             const planLabels = {
                 free: "SLOGA Free",
                 silver: "SLOGA Silver 🌟",
@@ -2639,15 +2628,8 @@ const App = {
                 gold: "SLOGA Gold 👑"
             };
             const activePlanLabel = planLabels[state.userSubscription || "free"] || "SLOGA Free";
-
-            if (DOM.savedPaymentMethodName) {
-                DOM.savedPaymentMethodName.textContent = labels[savedMethod] || "Apple Pay (Primary)";
-            }
-            if (DOM.savedPaymentMethodDesc) {
-                DOM.savedPaymentMethodDesc.textContent = `Connected account payment method for ${activePlanLabel} & match connection fees`;
-            }
             if (DOM.settingsPaymentPill) {
-                DOM.settingsPaymentPill.textContent = `${activePlanLabel} • ${pills[savedMethod] || " Pay Active"}`;
+                DOM.settingsPaymentPill.textContent = activePlanLabel;
             }
         }
 
@@ -2735,23 +2717,14 @@ const App = {
         if (DOM.settingsSavedPaymentSelect) {
             const savedMethod = DOM.settingsSavedPaymentSelect.value;
             state.userProfile.savedPaymentMethod = savedMethod;
-            const labels = {
-                applepay: "Apple Pay (Primary)",
-                card: "Credit / Debit Card",
-                googlepay: "Google Pay",
-                bank: "Bank Transfer"
+            const planLabels = {
+                free: "SLOGA Free",
+                silver: "SLOGA Silver 🌟",
+                bronze: "SLOGA Bronze 🥉",
+                gold: "SLOGA Gold 👑"
             };
-            const pills = {
-                applepay: " Pay Active",
-                card: "💳 Card Active",
-                googlepay: "G Pay Active",
-                bank: "🏦 Bank Active"
-            };
-            if (DOM.savedPaymentMethodName) {
-                DOM.savedPaymentMethodName.textContent = labels[savedMethod] || "Apple Pay (Primary)";
-            }
             if (DOM.settingsPaymentPill) {
-                DOM.settingsPaymentPill.textContent = pills[savedMethod] || " Pay Active";
+                DOM.settingsPaymentPill.textContent = planLabels[state.userSubscription || "free"] || "SLOGA Free";
             }
         }
 
