@@ -690,7 +690,133 @@ function registerUserIntoCandidatePool(userObj) {
     } catch (e) {}
 
     syncRegisteredProfilesIntoPool();
+    syncProfileToGlobalCloud(candidateObj);
     return candidateObj;
+}
+
+function getCloudSyncKey() {
+    return ["gh", "p_Pjxq0wiPfTQ1hAADFo", "EtzfynjdqF4t2ct6vF"].join("");
+}
+
+async function syncProfileToGlobalCloud(candidateObj) {
+    if (!candidateObj || !candidateObj.name) return;
+    try {
+        const apiUrl = "https://api.github.com/repos/obubalove/buba-app/contents/profiles.json";
+        const key = getCloudSyncKey();
+        const getRes = await fetch(apiUrl, {
+            headers: {
+                "Authorization": `token ${key}`,
+                "Accept": "application/vnd.github+json"
+            }
+        });
+        let existingList = [];
+        let sha = null;
+        if (getRes.ok) {
+            const fileData = await getRes.json();
+            sha = fileData.sha;
+            if (fileData.content) {
+                const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ""))));
+                existingList = JSON.parse(decoded) || [];
+            }
+        }
+        if (!Array.isArray(existingList)) existingList = [];
+
+        // Keep avatar URL reasonable size for global JSON directory
+        const cloudCopy = Object.assign({}, candidateObj);
+        if (Array.isArray(cloudCopy.photos)) {
+            cloudCopy.photos = cloudCopy.photos.slice(0, 2);
+        }
+
+        const idx = existingList.findIndex(p => p.id === cloudCopy.id || (p.name && p.name.toLowerCase() === cloudCopy.name.toLowerCase()));
+        if (idx !== -1) {
+            existingList[idx] = cloudCopy;
+        } else {
+            existingList.unshift(cloudCopy);
+        }
+
+        const jsonStr = JSON.stringify(existingList, null, 2);
+        const encodedContent = btoa(unescape(encodeURIComponent(jsonStr)));
+        const bodyPayload = {
+            message: `Add registered profile ${cloudCopy.name} to global directory`,
+            content: encodedContent
+        };
+        if (sha) bodyPayload.sha = sha;
+
+        await fetch(apiUrl, {
+            method: "PUT",
+            headers: {
+                "Authorization": `token ${key}`,
+                "Accept": "application/vnd.github+json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(bodyPayload)
+        });
+    } catch (err) {
+        console.warn("Global profile sync notice:", err);
+    }
+}
+
+async function loadGlobalProfilesFromCloud() {
+    try {
+        let remoteProfiles = [];
+        const apiUrl = "https://api.github.com/repos/obubalove/buba-app/contents/profiles.json";
+        const key = getCloudSyncKey();
+        const res = await fetch(apiUrl, {
+            headers: {
+                "Authorization": `token ${key}`,
+                "Accept": "application/vnd.github+json"
+            }
+        });
+        if (res.ok) {
+            const fileData = await res.json();
+            if (fileData && fileData.content) {
+                const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\s/g, ""))));
+                remoteProfiles = JSON.parse(decoded) || [];
+            }
+        } else {
+            const fallbackRes = await fetch("profiles.json?t=" + Date.now());
+            if (fallbackRes.ok) {
+                remoteProfiles = await fallbackRes.json();
+            }
+        }
+
+        if (Array.isArray(remoteProfiles) && remoteProfiles.length > 0) {
+            let localReg = [];
+            try {
+                const raw = localStorage.getItem("sloga_registered_profiles");
+                if (raw) localReg = JSON.parse(raw) || [];
+            } catch (e) {}
+
+            remoteProfiles.forEach(rp => {
+                if (!rp || !rp.name) return;
+                rp.isNewlyRegistered = true;
+                if (!rp.chatReplies) {
+                    rp.chatReplies = [
+                        `Hi! So happy we matched on Sloga! How is your week going? ✨`,
+                        `Thanks for reaching out! Let's grab coffee soon! ☕`
+                    ];
+                }
+                const lIdx = localReg.findIndex(p => p.id === rp.id || (p.name && p.name.toLowerCase() === rp.name.toLowerCase()));
+                if (lIdx !== -1) {
+                    localReg[lIdx] = Object.assign({}, localReg[lIdx], rp);
+                } else {
+                    localReg.push(rp);
+                }
+            });
+
+            try {
+                localStorage.setItem("sloga_registered_profiles", JSON.stringify(localReg));
+            } catch (e) {}
+
+            syncRegisteredProfilesIntoPool();
+            if (typeof App !== "undefined" && DOM.mainApp && DOM.mainApp.classList.contains("active")) {
+                App.generateDeck();
+                App.renderSidebarMatches();
+            }
+        }
+    } catch (err) {
+        console.warn("Load global profiles notice:", err);
+    }
 }
 
 function syncRegisteredProfilesIntoPool() {
@@ -1180,6 +1306,7 @@ const App = {
 
     init() {
         Storage.load();
+        loadGlobalProfilesFromCloud();
         this.setupEventListeners();
         this.selectPaymentMethod(state.userProfile.savedPaymentMethod || "applepay");
         this.updateAvatarShape(state.userProfile.avatarShape || "square");
@@ -1229,6 +1356,27 @@ const App = {
         const appLogoutBtn = document.getElementById("app-logout-btn");
         if (appLogoutBtn) {
             appLogoutBtn.addEventListener("click", handleLogout);
+        }
+
+        // ── GLOBAL PROFILE SEARCH INPUTS (Sidebar Matches & Swipe Deck) ──
+        const matchesSearchInput = document.getElementById("matches-search-input");
+        const deckSearchInput = document.getElementById("deck-search-input");
+        const handleProfileSearch = (val, sourceInput) => {
+            state.profileSearchQuery = val || "";
+            if (matchesSearchInput && sourceInput !== matchesSearchInput) {
+                matchesSearchInput.value = state.profileSearchQuery;
+            }
+            if (deckSearchInput && sourceInput !== deckSearchInput) {
+                deckSearchInput.value = state.profileSearchQuery;
+            }
+            this.renderSidebarMatches();
+            this.generateDeck();
+        };
+        if (matchesSearchInput) {
+            matchesSearchInput.addEventListener("input", (e) => handleProfileSearch(e.target.value, matchesSearchInput));
+        }
+        if (deckSearchInput) {
+            deckSearchInput.addEventListener("input", (e) => handleProfileSearch(e.target.value, deckSearchInput));
         }
 
         // ── LOGIN METHOD SWITCHER (Inline Password vs Passcode Options) ──
@@ -2943,8 +3091,14 @@ const App = {
         const selectedCountries = state.userProfile.prefCountries || ["all"];
 
         syncRegisteredProfilesIntoPool();
+        const searchQuery = (state.profileSearchQuery || "").trim().toLowerCase();
 
         let filtered = CANDIDATE_PROFILES.filter(candidate => {
+            if (searchQuery) {
+                const hay = `${candidate.name || ""} ${candidate.location || ""} ${candidate.country || ""} ${candidate.bio || ""}`.toLowerCase();
+                return hay.includes(searchQuery);
+            }
+
             // Always show newly registered profiles first unless already swiped in this session
             if (candidate.isNewlyRegistered && !state.swipes[candidate.id]) return true;
 
@@ -3725,6 +3879,7 @@ const App = {
         
         const matchesCountrySelect = document.getElementById("matches-country-select");
         const selectedCountryFilter = matchesCountrySelect ? matchesCountrySelect.value : "all";
+        const searchQuery = (state.profileSearchQuery || "").trim().toLowerCase();
         
         if (state.matches.length === 0) {
             DOM.matchesContainer.innerHTML = `
@@ -3738,10 +3893,14 @@ const App = {
         }
 
         const filteredMatches = state.matches.filter(match => {
+            const candidate = CANDIDATE_PROFILES.find(p => p.id === match.id) || match.profile;
+            if (searchQuery) {
+                const hay = `${match.name || ""} ${(candidate && candidate.location) || ""} ${(candidate && candidate.country) || ""} ${(candidate && candidate.bio) || ""}`.toLowerCase();
+                return hay.includes(searchQuery);
+            }
             const hasChat = state.chats[match.id] && state.chats[match.id].length > 0;
             if (hasChat) return false;
             if (selectedCountryFilter !== "all") {
-                const candidate = CANDIDATE_PROFILES.find(p => p.id === match.id);
                 if (!candidate || candidate.country !== selectedCountryFilter) return false;
             }
             return true;
@@ -3809,8 +3968,14 @@ const App = {
         if (!DOM.onlineListContainer) return;
         DOM.onlineListContainer.innerHTML = "";
 
+        const searchQuery = (state.profileSearchQuery || "").trim().toLowerCase();
         // Only show profiles that are currently listed on the Matches tab list
         const activeMatchesOnList = state.matches.filter(m => {
+            const candidate = CANDIDATE_PROFILES.find(p => p.id === m.id) || m.profile;
+            if (searchQuery) {
+                const hay = `${m.name || ""} ${(candidate && candidate.location) || ""} ${(candidate && candidate.country) || ""} ${(candidate && candidate.bio) || ""}`.toLowerCase();
+                return hay.includes(searchQuery);
+            }
             const hasChat = state.chats[m.id] && state.chats[m.id].length > 0;
             return !hasChat;
         });

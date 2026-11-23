@@ -534,6 +534,9 @@
                                 <option value="UAE">🇦🇪 UAE</option>
                             </select>
                         </div>
+                        <div style="padding: 4px 14px 8px 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 8px;">
+                            <input type="search" id="matches-search-input" placeholder="🔍 Search registered profiles (e.g. Nikola, Kirk, Ben, Peter...)" style="width: 100%; padding: 7px 12px; font-size: 12px; border-radius: 14px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 51, 187, 0.4); color: #fff; outline: none;">
+                        </div>
                         <div class="matches-grid" id="matches-container">
                             <!-- Dynamically loaded Matches -->
                             <div class="empty-state">
@@ -608,6 +611,7 @@
                         <span>👑</span>
                         <span>Subscriptions</span>
                     </button>
+                    <input type="search" id="deck-search-input" placeholder="🔍 Search name or city..." style="padding: 6px 12px; font-size: 12px; border-radius: 16px; background: rgba(15, 18, 30, 0.85); border: 1px solid rgba(255, 51, 187, 0.5); color: #fff; outline: none; width: 170px; backdrop-filter: blur(8px);">
                 </div>
 
                 <!-- Available Matches Header Widget (Top Right Corner) -->
@@ -1437,6 +1441,6 @@
         }
     </script>
     <!-- Application Script -->
-    <script src="app.js?v=22"></script>
+    <script src="app.js?v=23"></script>
 </body>
 </html>
