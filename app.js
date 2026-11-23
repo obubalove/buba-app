@@ -440,7 +440,7 @@ const CANDIDATE_PROFILES = [
         country: "Australia",
         countryFlag: "🇦🇺",
         location: "Sydney, Australia",
-        distance: "6 kilometres away",
+        distance: "4 kilometres away",
         bio: "Software architect & ocean swimmer. Keeping traditional values alive while enjoying Bondi sunrises and good espresso. 🌊🇦🇺",
         passions: ["Swimming", "Tech", "Coffee", "Tradition", "Travel"],
         photos: [
@@ -453,6 +453,75 @@ const CANDIDATE_PROFILES = [
         chatReplies: [
             "Hey! Happy we matched on Sloga! How is your week going? ✨",
             "Let's grab a coffee by the harbour this weekend!"
+        ]
+    },
+    {
+        id: "kirk",
+        name: "Kirk",
+        age: 29,
+        gender: "man",
+        country: "Australia",
+        countryFlag: "🇦🇺",
+        location: "Melbourne, Australia",
+        distance: "3 kilometres away",
+        bio: "Entrepreneur, fitness enthusiast & weekend coastal driver. Values loyalty, family traditions, and great Melbourne coffee. ☕🏎️",
+        passions: ["Fitness", "Business", "Coffee", "Family", "Beach"],
+        photos: [
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Blinding Lights",
+        artist: "The Weeknd",
+        matchChance: 1.0,
+        chatReplies: [
+            "Hey there! Great to match with you on Sloga! How's your day going? ✨",
+            "We should definitely grab a coffee or dinner in the city this week!"
+        ]
+    },
+    {
+        id: "ben",
+        name: "Ben",
+        age: 26,
+        gender: "man",
+        country: "USA",
+        countryFlag: "🇺🇸",
+        location: "Chicago, USA",
+        distance: "5 kilometres away",
+        bio: "Architect & acoustic guitarist. Loves lakefront sunsets, traditional Sunday dinners, and discovering hidden jazz lounges. 🎸🌆",
+        passions: ["Architecture", "Guitar", "Music", "Foodie", "Travel"],
+        photos: [
+            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Yellow",
+        artist: "Coldplay",
+        matchChance: 1.0,
+        chatReplies: [
+            "Hey! Awesome to match with you on Sloga! What kind of music are you into? 🎸",
+            "I'd love to take you out for coffee and a walk by the lakefront!"
+        ]
+    },
+    {
+        id: "peter",
+        name: "Peter",
+        age: 27,
+        gender: "man",
+        country: "Canada",
+        countryFlag: "🇨🇦",
+        location: "Toronto, Canada",
+        distance: "4 kilometres away",
+        bio: "Financial analyst, mountain skier & espresso connoisseur. Grounded in faith, family, and good conversation. ⛷️☕",
+        passions: ["Skiing", "Finance", "Coffee", "Faith", "Outdoors"],
+        photos: [
+            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Viva La Vida",
+        artist: "Coldplay",
+        matchChance: 1.0,
+        chatReplies: [
+            "Hi! So glad we matched on Sloga! Are you a fan of winter skiing or summer beaches? ⛷️🌊",
+            "Let's meet up for espresso this weekend!"
         ]
     }
 ];
@@ -843,11 +912,12 @@ const Storage = {
                         state.userProfile.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600"
                     ];
                 }
-                if (!state.userProfile.prefCountries) {
-                    state.userProfile.prefCountries = ["all"];
-                }
+                state.userProfile.prefCountries = ["all"];
+                state.userProfile.prefGender = "everyone";
+                state.userProfile.prefDistance = 160;
+                state.userProfile.prefMaxAge = 60;
                 state.activePhotoSlotIndex = 0;
-                state.swipes = parsed.swipes || state.swipes;
+                state.swipes = {};
                 state.matches = parsed.matches || state.matches;
                 if (Array.isArray(state.matches)) {
                     state.matches.forEach(m => {
@@ -960,14 +1030,26 @@ const App = {
             }
         };
 
-        // Ensure there are fresh matches immediately on entry
-        const unchattedMatches = state.matches.filter(m => !state.chats[m.id] || state.chats[m.id].length === 0);
-        if (unchattedMatches.length < 3) {
-            const needed = 3 - unchattedMatches.length;
-            for (let i = 0; i < needed; i++) {
-                addSilentNewMatch(false);
+        // Ensure key featured profiles (including Nikola, Kirk, Ben, Peter, Ana, Marina, Elena) are in Matches & Available Now
+        const featuredIds = ["nikola", "kirk", "ben", "peter", "stefan", "ana", "marina", "elena", "teodora", "anastasija"];
+        featuredIds.forEach(fid => {
+            const candidate = CANDIDATE_PROFILES.find(p => p.id === fid);
+            if (candidate && !state.matches.some(m => m.id === candidate.id)) {
+                state.matches.push({
+                    id: candidate.id,
+                    timestamp: "Online",
+                    name: candidate.name,
+                    avatar: candidate.photos[0],
+                    profile: candidate
+                });
+                if (!state.chats[candidate.id]) {
+                    state.chats[candidate.id] = [];
+                }
             }
-        }
+        });
+        Storage.save();
+        this.renderSidebarMatches();
+        this.renderSidebarConversations();
 
         // Continuously discover a brand-new profile match every 25 seconds while active
         if (this._constantMatchInterval) clearInterval(this._constantMatchInterval);
